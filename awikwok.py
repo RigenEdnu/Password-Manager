@@ -1,6 +1,17 @@
 import random
 import string
 
+# import data.json
+import json
+import os
+
+if os.path.exists("data.json"):
+    with open("data.json", "r") as file:
+        data = json.load(file)
+        list_password = data.get("password", [])
+else:
+    data = {"password": []}
+    list_password = data["password"]
 
 # pada generate password
 def generatepassword(length):
@@ -14,8 +25,10 @@ def generatepassword(length):
 
 # 3 SAVE PASSWORD
 def savepassword(label, password):
-    with open("password.txt", "a") as file:
-        file.write(f"{label} : {password}\n")
+    list_password.append({"label": label, "password": password})
+    with open("data.json", "w") as file:
+        json.dump(data, file)
+    print(f"Password untuk {label} telah disimpan di password.txt")
         
 def showpassword():
     with open("password.txt", "r") as file:

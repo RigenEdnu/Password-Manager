@@ -51,6 +51,17 @@ def copy_to_clipboard():
     app.clipboard_append(password_entry.get())
     app.update()
 
+# buatkan fungsi untuk mengcopy passowrd ke clipboard dari stored password
+def copy_password():
+    try:
+        selected_index = password_listbox.curselection()[0]
+        app.clipboard_clear()
+        app.clipboard_append(stored_passwords[selected_index])
+        app.update()
+        messagebox.showinfo("Success", "Password telah disalin di clipboard")
+    except IndexError:
+        messagebox.showwarning("Warning", "Tidak ada password yang dipilih")
+
 # Function to save password
 def save_password():
     password = password_entry.get()
@@ -79,12 +90,15 @@ def update_password_list():
 def delete_password():
     try:
         selected_index = password_listbox.curselection()[0]
-        del stored_passwords[selected_index]
-        update_password_list()
-        save_passwords()  # Save the updated list to file
-        messagebox.showinfo("Success", "Password deleted successfully!")
+        confirm = messagebox.askyesno("Confirm Delete", "Are you sure you want to delete the selected password?")
+        if confirm:
+            del stored_passwords[selected_index]
+            update_password_list()
+            save_passwords()  # Save the updated list to file
+            messagebox.showinfo("Success", "Password deleted successfully!")
     except IndexError:
         messagebox.showwarning("Warning", "No password selected!")
+
 
 # Main window
 app = tk.Tk()
@@ -94,6 +108,7 @@ app.configure(bg="#121212")
 
 # List to store passwords
 stored_passwords = load_passwords()  # Load stored passwords from file
+
 
 # Header
 header_frame = tk.Frame(app, bg="#075E54", height=50)
@@ -142,6 +157,9 @@ save_button.pack(padx=10, pady=10)
 # Stored passwords UI
 password_listbox = tk.Listbox(storage_tab, width=50, height=10)
 password_listbox.pack(padx=10, pady=10)
+
+delete_button = tk.Button(storage_tab, text="Copy Password", command=copy_password)
+delete_button.pack(padx=10, pady=10)
 
 delete_button = tk.Button(storage_tab, text="Delete Selected Password", command=delete_password)
 delete_button.pack(padx=10, pady=10)
