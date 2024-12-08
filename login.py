@@ -27,7 +27,7 @@ def signin():
 
 # load Image login
 img = PhotoImage(file='login.png')
-Label(login, image=img, bg='white').place(x=50,y=50)
+Label(login, image=img, bg='white').place(x=70,y=50)
 
 # Frame sign in, sign up
 frame = Frame(login, width=350, height=350, bg="white")

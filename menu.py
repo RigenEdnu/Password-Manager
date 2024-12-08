@@ -28,7 +28,10 @@ def passgen(length):
             show_error("Password length must be greater than 0.")
             return
         
-        characters = string.ascii_letters + string.digits + string.punctuation
+        huruf = string.ascii_letters
+        numbers = string.digits
+        symbol = string.punctuation
+        characters = huruf + numbers + symbol
         password = ''.join(random.choice(characters) for _ in range(length))
         show_password(password)
     except ValueError:
@@ -51,7 +54,7 @@ def copy_to_clipboard():
     app.clipboard_append(password_entry.get())
     app.update()
 
-# buatkan fungsi untuk mengcopy passowrd ke clipboard dari stored password
+# fungsi copy password ke clipboard
 def copy_password():
     try:
         selected_index = password_listbox.curselection()[0]
@@ -72,7 +75,7 @@ def save_password():
         messagebox.showinfo("Success", "Password saved successfully!")
         clear_password_field()
     else:
-        messagebox.showwarning("Warning", "No password to save!")
+        messagebox.showwarning("Peringatan", "No password to save!")
 
 # Function to clear the password input field
 def clear_password_field():
