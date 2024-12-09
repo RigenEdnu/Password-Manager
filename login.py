@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import customtkinter as ctk
-import getpass
 import keyboard
 
 import os
@@ -100,7 +99,13 @@ label.place(x=75, y=270)
 sign_up = Button(frame, width=6, text='Sign Up', border=0, bg='white', cursor='hand2', fg='#57a1f8')
 sign_up.place(x=215, y=270)
 
+
+# prototipe untuk menu password manager
+def disable_enter_key():
+    keyboard.unhook_all()
+
 def menu():
+    disable_enter_key()
     for widget in login.winfo_children():
         widget.destroy()
 

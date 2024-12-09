@@ -2,7 +2,6 @@ import random
 import string
 import customtkinter
 
-<<<<<<< Updated upstream
 # system gui
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
@@ -15,7 +14,7 @@ def passgen(long):
     mix = huruf + numbers + symbol
     mixed_result = [random.choice(mix) for _ in range(long)]
     password = ''.join(mixed_result)
-=======
+
 # System GUI settings
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
@@ -33,7 +32,6 @@ def passgen(length):
         showpw(password)
     except ValueError:
         show_error("Please enter a valid number for password length.")
->>>>>>> Stashed changes
 
 # Error message display
 def show_error(message):
@@ -43,7 +41,7 @@ def show_error(message):
     back_button = customtkinter.CTkButton(app, text="Back", command=buatpassword)
     back_button.pack(padx=10, pady=10)
 
-<<<<<<< Updated upstream
+
 def showpw(password):
     for widget in app.winfo_children():
         widget.pack_forget()  # Memastikan widget dihapus dengan benar
@@ -82,7 +80,7 @@ buatpassword()  # Menjalankan fungsi buatpassword untuk memulai UI
 
 # Menjalankan aplikasi GUI
 app.mainloop()  # Pemanggilan mainloop hanya sekali di akhir
-=======
+
 # Function to build the initial password input form
 def buatpassword():
     clear_widgets()
@@ -133,4 +131,4 @@ buatpassword()
 
 # Run the application
 app.mainloop()
->>>>>>> Stashed changes
+
