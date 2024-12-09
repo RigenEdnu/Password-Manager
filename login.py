@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import customtkinter as ctk
 import getpass
+import keyboard
 
 import os
 import json
@@ -85,7 +86,11 @@ def validate_and_signin():
     else:
         messagebox.showerror("Error", "username atau password salah")
 
-Button(frame, width=39, pady=7, text='Sign in', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=validate_and_signin).place(x=35, y=204)
+# Sign in Button
+def on_key_press(event):
+    if event.name == 'enter':
+        validate_and_signin()
+keyboard.on_press(on_key_press)
 
 Button(frame, width=39, pady=7, text='Sign in', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=validate_and_signin).place(x=35, y=204)
 label=Label(frame, text="Belum memiliki akun?", fg='black', bg='white', font=('Microsoft YaHei UI Light', 9))
@@ -113,5 +118,8 @@ def menu():
 
     delete_button = Button(login, width=39, pady=7, text='Delete', bg='#57a1f8', fg='white', border=0, cursor='hand2')
     delete_button.pack(pady=10)
+    
+    logout_button = Button(login, width=39, pady=7, text='LogOut', bg='#57a1f8', fg='white', border=0, cursor='hand2')
+    logout_button.pack(pady=10)
 
 login.mainloop()
