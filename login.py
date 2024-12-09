@@ -4,29 +4,20 @@ from tkinter import messagebox
 import customtkinter as ctk
 import getpass
 
+import os
+import json
+with open ("data.json", "r") as file:
+    data = json.load(file)
+    auth = data["auth"]
+
 # Halaman Login
 login=tk.Tk()
 login.title('Login')
 login.geometry('925x500+300+200')
 login.configure(bg="#fff")
 
-def signin():
-    username = user.get()
-    password = pw.get()
-
-    if username == 'admin' and password == '1234':
-        print('Welcome to Password Manager')
-        screen = Toplevel(login)
-        screen.title("App")
-        screen.geometry('925x500+300+200')
-        screen.config(bg="white")
-
-        Label(screen, text='Hello Everyone!', bg='#fff', font=('Calibri(Body)', 50, 'bold')).pack(expand=True)
-
-        screen.mainloop()
-
 # load Image login
-img = PhotoImage(file='login.png')
+img = PhotoImage(file=os.path.join(os.path.dirname(__file__), 'login.png'))
 Label(login, image=img, bg='white').place(x=70,y=50)
 
 # Frame sign in, sign up
@@ -81,12 +72,46 @@ pw.bind('<FocusOut>', on_leave_password)
 Frame(frame, width=295, height=2, bg="black").place(x=25, y=177)
 
 # Sign in Button
-Button(frame, width=39, pady=7, text='Sign in', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=signin).place(x=35, y=204)
+def validate_and_signin():
+    with open("data.json", "r") as file:
+        data = json.load(file)
+        auth = data["auth"]
+
+    username = user.get()
+    password = pw.get()
+
+    if username == auth["username"] and password == auth["password"]:
+        menu()
+    else:
+        messagebox.showerror("Error", "username atau password salah")
+
+Button(frame, width=39, pady=7, text='Sign in', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=validate_and_signin).place(x=35, y=204)
+
+Button(frame, width=39, pady=7, text='Sign in', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=validate_and_signin).place(x=35, y=204)
 label=Label(frame, text="Belum memiliki akun?", fg='black', bg='white', font=('Microsoft YaHei UI Light', 9))
 label.place(x=75, y=270)
 
 # Sign up Button
 sign_up = Button(frame, width=6, text='Sign Up', border=0, bg='white', cursor='hand2', fg='#57a1f8')
 sign_up.place(x=215, y=270)
+
+def menu():
+    for widget in login.winfo_children():
+        widget.destroy()
+
+    login.geometry('925x500+300+200')
+    login.configure(bg="#fff")
+
+    welcome_label = Label(login, text="Selamat Datang!", fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 23, 'bold'))
+    welcome_label.pack(pady=50)
+
+    create_button = Button(login, width=39, pady=7, text='Create', bg='#57a1f8', fg='white', border=0, cursor='hand2')
+    create_button.pack(pady=10)
+
+    update_button = Button(login, width=39, pady=7, text='Update', bg='#57a1f8', fg='white', border=0, cursor='hand2')
+    update_button.pack(pady=10)
+
+    delete_button = Button(login, width=39, pady=7, text='Delete', bg='#57a1f8', fg='white', border=0, cursor='hand2')
+    delete_button.pack(pady=10)
 
 login.mainloop()

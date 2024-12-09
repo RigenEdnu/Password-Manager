@@ -1,6 +1,12 @@
 import random
 import string
 
+import os
+import json
+with open ("password.json", "r") as file:
+    data = json.load(file)
+    pass_storage = data["pass_storage"]
+
 
 # pada generate password
 def generatepassword(length):
@@ -14,12 +20,15 @@ def generatepassword(length):
 
 # 3 SAVE PASSWORD
 def savepassword(label, password):
-    with open("password.txt", "a") as file:
-        file.write(f"{label} : {password}\n")
+    with open("password.json", "w") as file:
+        pass_storage[label] = password
+        json.dump(data, file)
         
 def showpassword():
-    with open("password.txt", "r") as file:
-        print(file.read())
+    with open("password.json", "r") as file:
+        data = json.load(file)
+        for label, password in data["pass_storage"].items():
+            print(f"{label} : {password}")
 
 def removepassword(label):
     with open("password.txt", "r") as file:
@@ -46,7 +55,7 @@ def replacepassword(label, password):
 
 def main():
     while True:
-        print("Selamat Datang di Password Manager")
+        print("\nSelamat Datang di Password Manager")
         print("1. Password Generate\n2. Save Password\n3. Show Password\n4. Remove Password\n5. Replace Password\n6. Exit")
         mainmenu = input("Pilih menu: ")
         if mainmenu == "1":

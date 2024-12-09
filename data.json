@@ -1,0 +1,7 @@
+{
+    "auth" : {
+        "id_user" : 1,
+        "username" : "admin",
+        "password" : "admin"
+    }
+}
