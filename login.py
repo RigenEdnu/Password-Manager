@@ -10,7 +10,7 @@ with open ("data.json", "r") as file:
     data = json.load(file)
     auth = data["auth"]
 
-# Halaman Login
+# Frame page
 root=tk.Tk()
 root.title('Login')
 root.geometry('925x500+300+200')
@@ -18,6 +18,8 @@ root.configure(bg="#fff")
 
 # load Image login
 def auth():
+
+    # login page
     img = PhotoImage(file="login.png")
     root.img = img 
     Label(root, image=img, bg='white').place(x=70, y=50)
