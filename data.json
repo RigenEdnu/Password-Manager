@@ -1,7 +1,8 @@
 {
-    "auth" : {
-        "id_user" : 1,
-        "username" : "admin",
-        "password" : "admin"
-    }
+    "auth": [
+        {
+            "username": "mama",
+            "password": "mama"
+        }
+    ]
 }

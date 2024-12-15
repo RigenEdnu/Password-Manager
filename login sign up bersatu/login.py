@@ -5,10 +5,6 @@ import customtkinter as ctk
 import keyboard
 import json
 
-with open("data.json", "r") as file:
-    data = json.load(file)
-    auth_data = data["auth"]
-
 # Frame page
 app = tk.Tk()
 app.title('Password Manager')
@@ -17,6 +13,7 @@ app.configure(bg="#fff")
 
 # sign in page
 def show_sign_in_page():
+    keyboard.unhook_all()
     for widget in app.winfo_children():
         widget.destroy()
 
@@ -50,9 +47,14 @@ def show_sign_in_page():
         username = user.get()
         password = pw.get()
 
-        if username == auth["username"] and password == auth["password"]:
-            show_main_menu()
-        else:
+        authenticated = False
+        for user_data in auth:
+            if username == user_data["username"] and password == user_data["password"]:
+                authenticated = True
+                show_main_menu()
+                break
+
+        if not authenticated:
             messagebox.showerror("Error", "username atau password salah")
 
     # event ketika tombol enter ditekan menjalankan fungsi validate_and_signin pada sign in page
@@ -73,6 +75,7 @@ def show_sign_in_page():
 
 # sign up page
 def show_sign_up_page():
+    keyboard.unhook_all()
     for widget in app.winfo_children():
         widget.destroy()
 
@@ -149,15 +152,50 @@ def show_sign_up_page():
             confirm_pw.configure(show="")
             confirm_pw.configure(fg="gray")
 
+    # validasi sign_up
+    def validate_and_signup():
+        username = user.get()
+        password = pw.get()
+        confirm_password = confirm_pw.get()
+
+        if password != confirm_password:
+            messagebox.showerror("Error", "Password tidak sama")
+        else:
+            try:
+                with open("data.json", "r") as file:
+                    data = json.load(file)
+            except FileNotFoundError:
+                data = {}
+
+            if "auth" not in data:
+                data["auth"] = []
+
+            data["auth"].append({
+                "username" : username,
+                "password" : password
+            })
+            with open("data.json", "w") as file:
+                json.dump(data, file, indent=4)
+
+            messagebox.showinfo("Success", "Sign-up berhasil!")
+            show_sign_in_page()
+
     confirm_pw.bind('<FocusIn>', on_enter_confirm_password)
     confirm_pw.bind('<FocusOut>', on_leave_confirm_password)
     Frame(frame, width=295, height=2, bg="black").place(x=25, y=247)
 
-    # validasi dan sign up
-    Button(frame, width=39, pady=7, text='Sign up', bg='#57a1f8', fg='white', border=0, cursor='hand2').place(x=35, y=280)
+    def on_key_press(event):
+        if app.focus_get() is not None:
+            if event.name == 'enter':
+                validate_and_signup()
+    keyboard.on_press(on_key_press)
+
+    # tombol sign up
+    Button(frame, width=39, pady=7, text='Sign up', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=validate_and_signup).place(x=35, y=280)
+
+    # tombol kembali ke sign in
     label = Label(frame, text="Sudah memiliki akun?", fg='black', bg='white', font=('Microsoft YaHei UI Light', 9))
     label.place(x=80, y=340)
-
     sign_in = Button(frame, text='Sign in', fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 9), border=0, cursor='hand2', command=show_sign_in_page)
     sign_in.place(x=210, y=340)
 
@@ -181,7 +219,7 @@ def show_main_menu():
     welcome_label.pack(pady=50)
 
     # tombol generate password
-    generate_button = Button(app, width=50, pady=10, text='Generate Password', bg='#57a1f8', fg='white', border=0, cursor='hand2')
+    generate_button = Button(app, width=50, pady=10, text='Generate Password', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=pw_generate)
     generate_button.pack(pady=10)
 
     # tombol save password
@@ -195,6 +233,20 @@ def show_main_menu():
     # tombol logout
     logout_button = Button(app,  width=50, pady=10, text='Log Out', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=show_sign_in_page)
     logout_button.pack(pady=10)
+
+# generate password page
+def pw_generate():
+    for widget in app.winfo_children():
+        widget.destroy()
+
+    # memuat gambar logo
+    img = PhotoImage(file='logo.png')
+    app.img = img
+    Label(app, image=img, bg='white').place(x=3, y=1, anchor='nw')
+
+    # label nama aplikasi
+    app_name = Label(app, text="Password Manager", fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 15, 'bold'))
+    app_name.place(x=60, y=10)
 
 show_sign_in_page()
 app.mainloop()
