@@ -174,11 +174,11 @@ def show_main_menu():
     generate_button.pack(pady=10)
 
     # tombol save password
-    save_button = Button(app,  width=50, pady=10, text='Save Passowrd', bg='#57a1f8', fg='white', border=0, cursor='hand2')
+    save_button = Button(app,  width=50, pady=10, text='Save Passowrd', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=save_password)
     save_button.pack(pady=10)
 
     # tombol archive password
-    archive_button = Button(app,  width=50, pady=10, text='Archive Password', bg='#57a1f8', fg='white', border=0, cursor='hand2')
+    archive_button = Button(app,  width=50, pady=10, text='Archive Password', bg='#57a1f8', fg='white', border=0, cursor='hand2', command=archive_password)
     archive_button.pack(pady=10)
 
     # tombol logout
@@ -196,7 +196,35 @@ def pw_generate():
     Label(app, image=img_logo, bg='white').place(x=3, y=1, anchor='nw')
 
     # label nama aplikasi
-    app_name = Label(app, text="Password Manager", fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 15, 'bold'))
+    app_name = Label(app, text="Generate Password", fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 15, 'bold'))
+    app_name.place(x=60, y=10)
+
+# save password page
+def save_password():
+    for widget in app.winfo_children():
+        widget.destroy()
+
+    # memuat gambar logo
+    img_logo = PhotoImage(file='logo.png')
+    app.img = img_logo
+    Label(app, image=img_logo, bg='white').place(x=3, y=1, anchor='nw')
+
+    # label nama aplikasi
+    app_name = Label(app, text="Save Password", fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 15, 'bold'))
+    app_name.place(x=60, y=10)
+
+# archive password page
+def archive_password():
+    for widget in app.winfo_children():
+        widget.destroy()
+
+    # memuat gambar logo
+    img_logo = PhotoImage(file='logo.png')
+    app.img = img_logo
+    Label(app, image=img_logo, bg='white').place(x=3, y=1, anchor='nw')
+
+    # label nama aplikasi
+    app_name = Label(app, text="Archive Password", fg='#57a1f8', bg='white', font=('Microsoft YaHei UI Light', 15, 'bold'))
     app_name.place(x=60, y=10)
 
 show_sign_in_page()
